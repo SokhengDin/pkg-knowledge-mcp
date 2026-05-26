@@ -2,14 +2,12 @@
 
 from __future__ import annotations
 
-import os
 from dotenv import load_dotenv
+from fastmcp import FastMCP
+from src.pkg_knowledge.tools import get_docs, get_changelog, get_api_ref, search_docs
+from src.pkg_knowledge.skills.loader import get_skill, list_skills
 
 load_dotenv()
-
-from fastmcp import FastMCP  # noqa: E402
-from src.pkg_knowledge.tools import get_docs, get_changelog, get_api_ref, search_docs  # noqa: E402
-from src.pkg_knowledge.skills.loader import get_skill, list_skills  # noqa: E402
 
 mcp = FastMCP(
     name="pkg-knowledge",
