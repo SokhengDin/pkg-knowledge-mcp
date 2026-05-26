@@ -1,0 +1,21 @@
+services:
+  pkg-knowledge-mcp:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      # Optional: raise GitHub API rate limit from 60 -> 5000 req/hr
+      # Create at https://github.com/settings/tokens (no scopes needed)
+      GITHUB_TOKEN: ${GITHUB_TOKEN:-}
+      DEFAULT_MAX_TOKENS: ${DEFAULT_MAX_TOKENS:-4000}
+      REQUEST_TIMEOUT: ${REQUEST_TIMEOUT:-15}
+    volumes:
+      # Mount custom skills at runtime without rebuilding the image
+      - ./skills/custom:/app/skills/custom:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
